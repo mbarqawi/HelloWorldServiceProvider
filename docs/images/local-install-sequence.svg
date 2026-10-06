@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="660" viewBox="0 0 1080 660" role="img" aria-labelledby="title desc">
+  <title id="title">Local workflow bundle installation sequence</title>
+  <desc id="desc">Developer builds the provider. MSBuild resolves the newest installed version or explicit path, reads bundle references, compiles the DLL, and runs the installer. The installer validates the manifest, backs it up when changed, copies the DLL, updates a single registration, verifies hashes, and writes a report. After restarting the host the provider is registered.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8" fill="#245a81"/></marker>
+    <style>text{font-family:Segoe UI,Arial,sans-serif;fill:#16324a;font-size:15px}.head{font-size:17px;font-weight:600}.line{stroke:#245a81;stroke-width:2;marker-end:url(#arrow)}.life{stroke:#9aafbd;stroke-dasharray:6 5}.note{fill:#eef6fc;stroke:#91b8d4}</style>
+  </defs>
+  <rect width="1080" height="660" fill="#fff"/>
+  <text x="32" y="32" class="head">Local development: build and install the Hello World provider</text>
+  <g fill="#e1effa" stroke="#245a81">
+    <rect x="25" y="55" width="140" height="44" rx="5"/><rect x="215" y="55" width="140" height="44" rx="5"/>
+    <rect x="430" y="55" width="150" height="44" rx="5"/><rect x="680" y="55" width="155" height="44" rx="5"/><rect x="900" y="55" width="155" height="44" rx="5"/>
+  </g>
+  <g text-anchor="middle" class="head"><text x="95" y="83">Developer</text><text x="285" y="83">MSBuild</text><text x="505" y="83">Installer</text><text x="757" y="83">Bundle cache</text><text x="977" y="83">Logic Apps host</text></g>
+  <g class="life"><path d="M95 100 V630"/><path d="M285 100 V630"/><path d="M505 100 V630"/><path d="M757 100 V630"/><path d="M977 100 V630"/></g>
+  <path class="line" d="M95 140 H285"/><text x="112" y="131">1. dotnet build</text>
+  <path class="line" d="M285 190 H757"/><text x="302" y="177">2. Resolve newest version (or explicit BundlePath / BundleVersion)</text>
+  <path class="line" d="M757 230 H285"/><text x="345" y="220">3. Read bin DLL references; compile provider</text>
+  <path class="line" d="M285 280 H505"/><text x="300" y="269">4. Run installer</text>
+  <path class="line" d="M505 330 H757"/><text x="516" y="318">5. Validate version + manifest</text>
+  <rect class="note" x="437" y="350" width="405" height="80" rx="5"/>
+  <text x="452" y="372">6. Check existing registration: add / update / unchanged</text>
+  <text x="452" y="394">Back up changed manifest; copy DLL if hash differs</text>
+  <text x="452" y="416">Write bin/extensions.json only when needed</text>
+  <path class="line" d="M505 468 H757"/><text x="520" y="454">7. Verify registration + DLL hash</text>
+  <path class="line" d="M505 515 H95"/><text x="155" y="503">8. Save JSON report (success or failure)</text>
+  <path class="line" d="M95 565 H977"/><text x="325" y="552">9. Restart local host and refresh designer</text>
+  <path class="line" d="M977 608 H757"/><text x="630" y="597">10. Load DLL; startup registers helloWorld</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="720" viewBox="0 0 1100 720" role="img" aria-labelledby="title desc">
+  <title id="title">Customized workflow bundle packaging sequence</title>
+  <desc id="desc">Developer runs the publisher with a version or supplies it interactively. The publisher validates the local bundle and provider, downloads the same version from the official CDN, extracts it, checks original registrations, injects the local manifest and DLL, recreates and verifies the ZIP, writes the site directory layout and a JSON report, and cleans its temporary directory. No upload occurs.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0 0 L10 4 L0 8" fill="#245a81"/></marker>
+    <style>text{font-family:Segoe UI,Arial,sans-serif;fill:#16324a;font-size:15px}.head{font-size:17px;font-weight:600}.line{stroke:#245a81;stroke-width:2;marker-end:url(#arrow)}.life{stroke:#9aafbd;stroke-dasharray:6 5}.note{fill:#eef6fc;stroke:#91b8d4}</style>
+  </defs>
+  <rect width="1100" height="720" fill="#fff"/>
+  <text x="28" y="32" class="head">Publish preparation: package a matching-version bundle for a static site</text>
+  <g fill="#e1effa" stroke="#245a81">
+    <rect x="20" y="55" width="140" height="44" rx="5"/><rect x="235" y="55" width="150" height="44" rx="5"/><rect x="480" y="55" width="160" height="44" rx="5"/><rect x="710" y="55" width="140" height="44" rx="5"/><rect x="910" y="55" width="170" height="44" rx="5"/>
+  </g>
+  <g text-anchor="middle" class="head"><text x="90" y="83">Developer</text><text x="310" y="83">Publisher</text><text x="560" y="83">Local bundle</text><text x="780" y="83">Official CDN</text><text x="995" y="83">Output folder</text></g>
+  <g class="life"><path d="M90 100 V690"/><path d="M310 100 V690"/><path d="M560 100 V690"/><path d="M780 100 V690"/><path d="M995 100 V690"/></g>
+  <path class="line" d="M90 140 H310"/><text x="100" y="129">1. Run packaging script</text>
+  <path class="line" d="M310 185 H90"/><text x="102" y="174">2. Prompt if version omitted</text>
+  <path class="line" d="M310 230 H560"/><text x="323" y="218">3. Validate same version + DLL</text>
+  <path class="line" d="M560 273 H310"/><text x="320" y="260">4. Read local manifest + identity</text>
+  <path class="line" d="M310 318 H780"/><text x="331" y="306">5. GET versioned *_win-any.zip</text>
+  <path class="line" d="M780 361 H310"/><text x="396" y="349">6. Return original bundle ZIP (or HTTP error)</text>
+  <rect class="note" x="236" y="388" width="610" height="121" rx="5"/>
+  <text x="252" y="412">7. Extract to a unique temporary directory</text>
+  <text x="252" y="438">8. Check CDN registrations match local; reject uncopied custom providers</text>
+  <text x="252" y="464">9. Inject local bin/extensions.json and HelloWorldServiceProvider.dll</text>
+  <text x="252" y="490">10. Recreate ZIP; verify injected file SHA256 hashes inside archive</text>
+  <path class="line" d="M310 553 H995"/><text x="359" y="540">11. Write ExtensionBundles / bundle ID / version / versioned ZIP</text>
+  <path class="line" d="M310 605 H90"/><text x="108" y="592">12. Save JSON report</text>
+  <rect class="note" x="236" y="634" width="610" height="49" rx="5"/>
+  <text x="252" y="656">13. Remove temporary files. Existing output requires -Force.</text>
+  <text x="252" y="676">No upload or Logic App configuration change is performed.</text>
+</svg>

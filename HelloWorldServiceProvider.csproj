@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <BundleRootPath Condition="'$(BundleRootPath)' == ''">$(USERPROFILE)\.azure-functions-core-tools\Functions\ExtensionBundles\Microsoft.Azure.Functions.ExtensionBundle.Workflows</BundleRootPath>
+    <InstallWorkflowBundleExtension Condition="'$(InstallWorkflowBundleExtension)' == ''">true</InstallWorkflowBundleExtension>
+    <WorkflowBundleExtensionName Condition="'$(WorkflowBundleExtensionName)' == ''">$(AssemblyName)</WorkflowBundleExtensionName>
+    <WorkflowBundleStartupType Condition="'$(WorkflowBundleStartupType)' == ''">$(RootNamespace).HelloWorldStartup</WorkflowBundleStartupType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.42" />
+    <WorkflowBundleReference Include="Microsoft.Azure.Workflows.ServiceProviders.Abstractions;Microsoft.Azure.Workflows.ServiceProviders.Abstractions.Manifest;Microsoft.Azure.Workflows.ServiceProviders.Abstractions.NetStandard;Microsoft.Azure.Workflows.ServiceProviders.WebJobs.Abstractions;Microsoft.WindowsAzure.ResourceStack;Newtonsoft.Json" />
+    <Reference Include="@(WorkflowBundleReference)" />
+  </ItemGroup>
+  <Target Name="ResolveWorkflowBundle" BeforeTargets="ResolveAssemblyReferences">
+    <Exec Command="powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Resolve-WorkflowBundlePath.ps1&quot; -BundlePath &quot;$(BundlePath)&quot; -Version &quot;$(BundleVersion)&quot; -BundleRootPath &quot;$(BundleRootPath)&quot;" ConsoleToMSBuild="true" StandardOutputImportance="Low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="ResolvedBundlePath" />
+    </Exec>
+    <PropertyGroup>
+      <BundlePath Condition="'$(BundlePath)' == ''">$(ResolvedBundlePath)</BundlePath>
+    </PropertyGroup>
+    <ItemGroup>
+      <Reference Update="@(WorkflowBundleReference)">
+        <HintPath>$(ResolvedBundlePath)\bin\%(Identity).dll</HintPath>
+        <Private>false</Private>
+      </Reference>
+    </ItemGroup>
+    <Message Importance="high" Text="Using Workflow bundle: $(ResolvedBundlePath)" />
+  </Target>
+  <Target Name="InstallWorkflowBundleExtension" AfterTargets="Build" Condition="'$(InstallWorkflowBundleExtension)' == 'true' and '$(DesignTimeBuild)' != 'true'">
+    <Message Importance="high" Text="Installing $(WorkflowBundleExtensionName) into Workflow bundle: $(ResolvedBundlePath)" />
+    <Exec Command="powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\Install-WorkflowBundleExtension.ps1&quot; -BundlePath &quot;$(ResolvedBundlePath)&quot; -AssemblyPath &quot;$(TargetPath)&quot; -StartupType &quot;$(WorkflowBundleStartupType)&quot; -ExtensionName &quot;$(WorkflowBundleExtensionName)&quot;" />
+  </Target>
+</Project>
